@@ -136,3 +136,18 @@ STATICFILES_DIRS = [
 # Media Files Configuration 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
+
+#Django Message Configuration
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}
+
+#SMTP Configuration 
+DEFAULT_FROM_EMAIL = "MeroKart<support@merokart.com>"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'risingsun2022hd@gmail.com'
+EMAIL_HOST_PASSWORD = 'sUnhasRiseing213'
+EMAIL_USE_TLS = True
+
