@@ -145,15 +145,19 @@ def add_cart(request, product_id):
 
 #Remove Cart item   decrement function 
 def remove_cart(request, product_id, cart_item_id):
-    cart = Cart.objects.get(cart_id=_cart_id(request)) 
+     
     product = get_object_or_404(Product, id=product_id) # Getting Product 
     try:
-        cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id) #Getting cart items
+        if request.user.is_authenticated: #if user is logged in system 
+            cart_item = CartItem.objects.get(product=product, user=request.user, id=cart_item_id)
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id) #Getting cart items
         if cart_item.quantity > 1: # Checking if product in cart greater then 1 then below its minus by 1
             cart_item.quantity -= 1
             cart_item.save()
         else:
-            cart.item.delete()
+            cart_item.delete()
     except:
         pass
     return redirect('cart')
@@ -161,9 +165,13 @@ def remove_cart(request, product_id, cart_item_id):
 
 #Remove Cart item  function single product
 def remove_cart_item(request, product_id, cart_item_id):
-    cart = Cart.objects.get(cart_id=_cart_id(request)) 
-    product = get_object_or_404(Product, id=product_id) # Getting Product 
-    cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id) #Getting cart items
+     
+    product = get_object_or_404(Product, id=product_id) # Getting Product
+    if request.user.is_authenticated:
+        cart_item = CartItem.objects.get(product=product, user=request.user, id=cart_item_id)
+    else:
+        cart = Cart.objects.get(cart_id=_cart_id(request)) 
+        cart_item = CartItem.objects.get(product=product, cart=cart, id=cart_item_id) #Getting cart items
     cart_item.delete()
     
     return redirect('cart')
@@ -205,8 +213,13 @@ def cart(request, total=0, quantity=0, cart_items=None):
 @login_required(login_url = "login")
 def checkout(request, total=0, quantity=0, cart_items=None):
     try:
-        cart = Cart.objects.get(cart_id=_cart_id(request)) # Getting Cart id 
-        cart_items = CartItem.objects.filter(cart=cart, is_active=True) # Getting Item in Cart
+        tax = 0
+        grand_total = 0
+        if request.user.is_authenticated:
+            cart_items = CartItem.objects.filter(user=request.user, is_active=True) # Getting Item in Cart if user is login user
+        else:
+            cart = Cart.objects.get(cart_id=_cart_id(request)) # Getting Cart id  for none login user
+            cart_items = CartItem.objects.filter(cart=cart, is_active=True) # Getting Item in Cart
         for cart_item in cart_items:
             total += (cart_item.product.price * cart_item.quantity) # Sub Total of Product
             quantity += cart_item.quantity # Total Quantity of Product

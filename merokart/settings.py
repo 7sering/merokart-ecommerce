@@ -147,7 +147,7 @@ MESSAGE_TAGS = {
 DEFAULT_FROM_EMAIL = "MeroKart<support@merokart.com>"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'yourmail@gmail.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 
