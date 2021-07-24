@@ -7,7 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
-#Function for getting cart id from browser session key
+#TODO:  Function for getting cart id from browser session key
+
 def _cart_id(request):
     cart = request.session.session_key #Requesting session key for car id 
     if not cart: #if cart session key is not availabe creating session key 
@@ -16,7 +17,8 @@ def _cart_id(request):
 
 
 
-# Add to Cart Function Codes 
+#TODO:  Add to Cart Function Codes 
+
 def add_cart(request, product_id):
     current_user = request.user
     product = Product.objects.get(id=product_id) #get the product
@@ -143,9 +145,9 @@ def add_cart(request, product_id):
 
 
 
-#Remove Cart item   decrement function 
+#TODO: Remove Cart item   decrement function 
+
 def remove_cart(request, product_id, cart_item_id):
-     
     product = get_object_or_404(Product, id=product_id) # Getting Product 
     try:
         if request.user.is_authenticated: #if user is logged in system 
@@ -163,7 +165,10 @@ def remove_cart(request, product_id, cart_item_id):
     return redirect('cart')
 
 
-#Remove Cart item  function single product
+
+
+#TODO: Remove Cart item  function single product
+
 def remove_cart_item(request, product_id, cart_item_id):
      
     product = get_object_or_404(Product, id=product_id) # Getting Product
@@ -176,11 +181,9 @@ def remove_cart_item(request, product_id, cart_item_id):
     
     return redirect('cart')
     
-    
-    
         
 
-# Cart Function Codes
+#TODO: Cart Function Codes
 def cart(request, total=0, quantity=0, cart_items=None):
     tax = 0
     grand_total = 0
@@ -209,7 +212,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
 
 
 
-#checkout function 
+#TODO: checkout function 
 @login_required(login_url = "login")
 def checkout(request, total=0, quantity=0, cart_items=None):
     try:
